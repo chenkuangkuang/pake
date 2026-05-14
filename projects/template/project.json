@@ -1,0 +1,8 @@
+{
+  "name": "My Pake App",
+  "slug": "my-pake-app",
+  "url": "https://example.com",
+  "width": 1440,
+  "height": 960,
+  "exeName": "pake-mypakeapp.exe"
+}
