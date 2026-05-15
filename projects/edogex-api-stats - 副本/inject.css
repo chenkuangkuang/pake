@@ -1,0 +1,307 @@
+.pake-control-group {
+    position: fixed;
+    top: 14px;
+    right: 14px;
+    z-index: 2147483647;
+    display: inline-flex;
+    align-items: stretch;
+    overflow: hidden;
+    border-radius: 999px;
+    background: rgba(17, 24, 39, 0.94);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+    backdrop-filter: blur(10px);
+}
+
+#pake-pin-btn,
+#pake-refresh-settings-btn {
+    padding: 8px 12px;
+    border: 0;
+    background: transparent;
+    color: #ffffff;
+    font:
+        600 12px/1 system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+    cursor: pointer;
+}
+
+#pake-pin-btn {
+    min-width: 58px;
+}
+
+#pake-pin-btn:hover,
+#pake-refresh-settings-btn:hover,
+#pake-refresh-settings-btn[data-open="true"] {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+#pake-pin-btn:hover {
+    filter: brightness(1.08);
+}
+
+#pake-pin-btn[data-pinned="true"] {
+    background: #dc2626;
+}
+
+#pake-refresh-settings-btn {
+    width: 42px;
+    padding: 8px 10px;
+    border-left: 1px solid rgba(255, 255, 255, 0.12);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease;
+}
+
+#pake-refresh-settings-btn svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
+#pake-refresh-btn {
+    position: fixed;
+    left: 20px;
+    bottom: 20px;
+    z-index: 2147483647;
+    width: 62px;
+    height: 62px;
+    border: 0;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    font-weight: 700;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(10px);
+    opacity: 0.92;
+    transition:
+        transform 0.2s ease,
+        opacity 0.2s ease;
+}
+
+#pake-refresh-btn[data-mode="timer-only"] {
+    width: auto;
+    min-width: 72px;
+    height: 40px;
+    padding: 0 14px;
+    border-radius: 999px;
+    background: rgba(17, 24, 39, 0.92);
+}
+
+#pake-refresh-btn[data-mode="button-only"] {
+    gap: 0;
+}
+
+.pake-refresh-btn__title {
+    font-size: 12px;
+}
+
+.pake-refresh-btn__timer {
+    font-size: 10px;
+    opacity: 0.9;
+}
+
+#pake-refresh-settings-panel {
+    position: fixed;
+    top: 62px;
+    right: 14px;
+    z-index: 2147483647;
+    width: 360px;
+    max-width: calc(100vw - 28px);
+    padding: 14px;
+    border-radius: 16px;
+    background: rgba(17, 24, 39, 0.96);
+    color: #ffffff;
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.28);
+    font:
+        500 12px/1.4 system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+}
+
+#pake-refresh-settings-panel[hidden] {
+    display: none !important;
+}
+
+.pake-refresh-settings-panel__title {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.pake-refresh-settings-panel__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.pake-refresh-settings-panel__close {
+    width: 28px;
+    height: 28px;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+}
+
+.pake-refresh-settings-panel__close:hover {
+    background: rgba(255, 255, 255, 0.14);
+}
+
+.pake-refresh-settings-panel__hint {
+    margin-top: 6px;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.pake-refresh-settings-panel__toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    color: rgba(255, 255, 255, 0.9);
+    width: 100%;
+}
+
+.pake-refresh-settings-panel__toggle + .pake-refresh-settings-panel__toggle {
+    margin-top: 16px;
+}
+
+.pake-refresh-settings-panel__checkbox {
+    width: 16px;
+    height: 16px;
+}
+
+.pake-refresh-settings-panel__input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.pake-refresh-settings-panel__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.pake-refresh-settings-panel__field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.pake-refresh-settings-panel__field span {
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.pake-refresh-settings-panel__field--url {
+    margin-top: 12px;
+}
+
+.pake-refresh-settings-panel__preview {
+    margin-top: 12px;
+    color: #bfdbfe;
+}
+
+.pake-refresh-settings-panel__preview[data-error="true"] {
+    color: #fca5a5;
+}
+
+.pake-refresh-settings-panel__actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+}
+
+.pake-refresh-settings-panel__actions button {
+    border: 0;
+    border-radius: 999px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.pake-refresh-settings-panel__actions button[data-action="save"] {
+    background: #22c55e;
+    color: #052e16;
+}
+
+.pake-refresh-settings-panel__actions button[data-action="default"] {
+    background: #f59e0b;
+    color: #451a03;
+}
+
+.pake-refresh-settings-panel__status {
+    min-height: 18px;
+    margin-top: 10px;
+    color: #bfdbfe;
+}
+
+.pake-refresh-settings-panel__status[data-error="true"] {
+    color: #fca5a5;
+}
+
+@media (max-width: 700px) {
+    .pake-control-group {
+        top: 10px;
+        right: 10px;
+    }
+
+    #pake-refresh-btn {
+        width: 60px;
+        height: 60px;
+        top: auto;
+        right: auto;
+        left: 10px;
+        bottom: 10px;
+    }
+
+    #pake-refresh-btn[data-mode="timer-only"] {
+        min-width: 68px;
+        height: 38px;
+    }
+
+    #pake-refresh-settings-panel {
+        top: 58px;
+        right: 10px;
+    }
+
+    body {
+        overflow: hidden;
+    }
+
+    .api-input-wide-card,
+    .glass-strong.mb-4.rounded-2xl,
+    .flex.justify-center {
+        display: none;
+    }
+
+    .card.flex.h-full.flex-col.p-3 {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+}

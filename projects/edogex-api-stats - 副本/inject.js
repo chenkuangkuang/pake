@@ -77,7 +77,7 @@
 
     function formatCountdown(seconds) {
         const safeSeconds = Math.max(0, Math.round(seconds));
-        if (safeSeconds <= 60) {
+        if (safeSeconds < 60) {
             return `${safeSeconds}秒`;
         }
 
@@ -92,7 +92,7 @@
             return;
         }
 
-        const { button, title, separator, timer, refreshEnabled, refreshButtonVisible, countdown } = state;
+        const { button, title, timer, refreshEnabled, refreshButtonVisible, countdown } = state;
 
         if (!refreshEnabled && !refreshButtonVisible) {
             button.hidden = true;
@@ -106,7 +106,6 @@
         if (refreshButtonVisible) {
             title.hidden = false;
             title.textContent = "悬浮刷新";
-            separator.hidden = !refreshEnabled;
             if (refreshEnabled) {
                 timer.hidden = false;
                 timer.textContent = formatCountdown(countdown);
@@ -119,7 +118,6 @@
         }
 
         title.hidden = true;
-        separator.hidden = true;
         timer.hidden = false;
         timer.textContent = formatCountdown(countdown);
         button.setAttribute("data-mode", "timer-only");
@@ -615,11 +613,6 @@
             return;
         }
 
-        const group = ensureControlGroup();
-        if (!group) {
-            return;
-        }
-
         const btn = root.document.createElement("button");
         btn.id = REFRESH_BUTTON_ID;
         btn.type = "button";
@@ -643,16 +636,10 @@
         title.innerText = "悬浮刷新";
         title.className = "pake-refresh-btn__title";
 
-        const separator = root.document.createElement("div");
-        separator.className = "pake-refresh-btn__separator";
-        separator.setAttribute("aria-hidden", "true");
-        separator.textContent = "|";
-
         const timer = root.document.createElement("div");
         timer.className = "pake-refresh-btn__timer";
 
         btn.appendChild(title);
-        btn.appendChild(separator);
         btn.appendChild(timer);
 
         let countdown = readRefreshIntervalSeconds();
@@ -666,17 +653,10 @@
             refreshEnabled,
             refreshButtonVisible,
             title,
-            separator,
             timer,
         };
 
-        const settingsButton = root.document.getElementById(REFRESH_SETTINGS_BUTTON_ID);
-        if (settingsButton?.parentElement === group) {
-            group.insertBefore(btn, settingsButton);
-        } else {
-            group.appendChild(btn);
-        }
-
+        root.document.body.appendChild(btn);
         updateRefreshButtonDisplay();
 
         root.setInterval(() => {
