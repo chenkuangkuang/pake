@@ -743,6 +743,10 @@ async function mergeConfig(url, options, tauriConf) {
         if (!windowsBundle) {
             throw new Error('Windows bundle configuration is missing from tauri.windows.conf.json; cannot build Windows target.');
         }
+        windowsBundle.webviewInstallMode = {
+            type: 'offlineInstaller',
+            silent: true,
+        };
         windowsBundle.wix.language[0] = installerLanguage;
     }
     await handleLocalFile(url, useLocalFile, tauriConf);

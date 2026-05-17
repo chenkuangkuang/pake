@@ -6,6 +6,10 @@
     "targets": ["msi"],
     "windows": {
       "digestAlgorithm": "sha256",
+      "webviewInstallMode": {
+        "type": "offlineInstaller",
+        "silent": true
+      },
       "wix": {
         "language": ["en-US"],
         "template": "assets/main.wxs"

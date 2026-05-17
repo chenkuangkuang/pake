@@ -4,5 +4,6 @@
   "url": "https://crs.edogex.com/admin-next/api-stats",
   "width": 1440,
   "height": 960,
+  "hideTitleBar": true,
   "exeName": "pake-edogexapistatsnativepinfixed.exe"
 }

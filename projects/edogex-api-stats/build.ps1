@@ -53,6 +53,11 @@ New-Item -ItemType Directory -Force -Path $distDir | Out-Null
 New-Item -ItemType Directory -Force -Path $releaseDir | Out-Null
 
 $injectArg = "$injectCss,$injectJs"
+$hideTitleBarArg = @()
+
+if ($project.hideTitleBar) {
+  $hideTitleBarArg = @("--hide-title-bar")
+}
 
 Write-Host "Building $($project.name) ..." -ForegroundColor Cyan
 
@@ -61,6 +66,7 @@ Write-Host "Building $($project.name) ..." -ForegroundColor Cyan
   --width $project.width `
   --height $project.height `
   --inject $injectArg `
+  @hideTitleBarArg `
   --targets app
 
 if ($LASTEXITCODE -ne 0) {

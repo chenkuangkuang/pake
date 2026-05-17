@@ -200,6 +200,11 @@ fn build_window(
         .maximized(window_config.maximize);
 
     #[cfg(target_os = "windows")]
+    if window_config.hide_title_bar {
+        window_builder = window_builder.decorations(false);
+    }
+
+    #[cfg(target_os = "windows")]
     {
         let scale_factor = app
             .primary_monitor()
