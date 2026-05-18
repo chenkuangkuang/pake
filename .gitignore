@@ -1,3 +1,7 @@
 cli/node_modules/
 cli/node_modules.bak/
 cli/src-tauri/target/
+projects/*/dist/
+releases/
+*.exe
+*.msi

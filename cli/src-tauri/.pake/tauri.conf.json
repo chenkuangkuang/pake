@@ -1,6 +1,6 @@
 {
-    "productName": "EDogex API Stats Native Pin Fixed",
-    "identifier": "com.pake.ad459c1",
+    "productName": "EDogex API Stats Native Pin Fixed NoTitleTest",
+    "identifier": "com.pake.a3d6c22",
     "version": "1.0.0",
     "app": {
         "withGlobalTauri": true,
@@ -14,17 +14,21 @@
     },
     "bundle": {
         "icon": [
-            "png/edogex_api_stats_native_pin_fixed_256.ico"
+            "png/edogex_api_stats_native_pin_fixed_notitletest_256.ico"
         ],
         "active": true,
         "resources": [
-            "png/edogex_api_stats_native_pin_fixed_256.ico"
+            "png/edogex_api_stats_native_pin_fixed_notitletest_256.ico"
         ],
         "targets": [
             "msi"
         ],
         "windows": {
             "digestAlgorithm": "sha256",
+            "webviewInstallMode": {
+                "type": "offlineInstaller",
+                "silent": true
+            },
             "wix": {
                 "language": [
                     "en-US"
@@ -33,5 +37,5 @@
             }
         }
     },
-    "mainBinaryName": "pake-edogexapistatsnativepinfixed"
+    "mainBinaryName": "pake-edogexapistatsnativepinfixednotitletest"
 }

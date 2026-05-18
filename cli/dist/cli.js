@@ -2369,7 +2369,7 @@ const DEFAULT_PAKE_OPTIONS = {
     width: 1200,
     fullscreen: false,
     maximize: false,
-    hideTitleBar: false,
+    hideTitleBar: true,
     alwaysOnTop: false,
     appVersion: '1.0.0',
     darkMode: false,

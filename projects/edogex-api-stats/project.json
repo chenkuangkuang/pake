@@ -1,9 +1,9 @@
 {
-  "name": "EDogex API Stats Native Pin Fixed",
+  "name": "EDogex API Stats Native Pin Fixed NoTitleTest",
   "slug": "edogex-api-stats",
   "url": "https://crs.edogex.com/admin-next/api-stats",
   "width": 1440,
   "height": 960,
   "hideTitleBar": true,
-  "exeName": "pake-edogexapistatsnativepinfixed.exe"
+  "exeName": "pake-edogexapistatsnativepinfixednotitletest.exe"
 }

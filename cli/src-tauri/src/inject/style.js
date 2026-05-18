@@ -1,3 +1,7 @@
+const PAKE_DRAG_REGION_ID = "pake-top-dom";
+const PAKE_DRAG_SENSOR_ID = "pake-top-sensor";
+const PAKE_MAXIMIZE_BUTTON_ID = "pake-maximize-btn";
+
 window.addEventListener("DOMContentLoaded", (_event) => {
   // Customize and transform existing functions
   const contentCSS = `
@@ -468,24 +472,6 @@ window.addEventListener("DOMContentLoaded", (_event) => {
       padding-top:30px;
     }
 
-    #pake-top-dom:active {
-      cursor: grabbing;
-      cursor: -webkit-grabbing;
-    }
-
-    #pake-top-dom{
-      position:fixed;
-      background:transparent;
-      top:0;
-      width: 100%;
-      height: 20px;
-      cursor: grab;
-      -webkit-app-region: drag;
-      user-select: none;
-      -webkit-user-select: none;
-      z-index: 99999;
-    }
-
     @media (max-width:767px){
       #__next .overflow-hidden.w-full .max-w-full>.sticky.top-0 {
         padding-top: 20px;
@@ -496,10 +482,127 @@ window.addEventListener("DOMContentLoaded", (_event) => {
       }
     }
   `;
+  const dragRegionCSS = `
+    #${PAKE_DRAG_SENSOR_ID} {
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100% !important;
+      height: 12px !important;
+      background: transparent !important;
+      z-index: 99998 !important;
+      pointer-events: auto !important;
+    }
+
+    #${PAKE_DRAG_REGION_ID} {
+      position: fixed !important;
+      top: 8px !important;
+      left: 50% !important;
+      transform: translate(-50%, -12px) !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 0 !important;
+      padding: 0 !important;
+      border-radius: 999px !important;
+      background: rgba(17, 24, 39, 0.92) !important;
+      color: rgba(255, 255, 255, 0.98) !important;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22) !important;
+      backdrop-filter: blur(12px) !important;
+      overflow: hidden !important;
+      user-select: none !important;
+      -webkit-user-select: none !important;
+      pointer-events: auto !important;
+      z-index: 99999 !important;
+      opacity: 0 !important;
+      transition:
+        opacity 0.16s ease,
+        transform 0.16s ease !important;
+      white-space: nowrap !important;
+    }
+
+    #${PAKE_DRAG_SENSOR_ID}:hover + #${PAKE_DRAG_REGION_ID},
+    #${PAKE_DRAG_REGION_ID}:hover {
+      opacity: 1 !important;
+      transform: translate(-50%, 0) !important;
+    }
+
+    #${PAKE_DRAG_REGION_ID} .pake-drag-handle {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      min-width: 42px !important;
+      height: 30px !important;
+      padding: 0 11px !important;
+      border: 0 !important;
+      background: transparent !important;
+      color: inherit !important;
+      cursor: grab !important;
+      -webkit-app-region: drag !important;
+      font:
+        600 12px/1 system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif !important;
+      letter-spacing: 0.01em !important;
+    }
+
+    #${PAKE_DRAG_REGION_ID} .pake-drag-handle:active {
+      cursor: grabbing !important;
+      cursor: -webkit-grabbing !important;
+    }
+
+    #${PAKE_MAXIMIZE_BUTTON_ID} {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      min-width: 42px !important;
+      height: 30px !important;
+      padding: 0 11px !important;
+      border: 0 !important;
+      border-left: 1px solid rgba(255, 255, 255, 0.14) !important;
+      border-radius: 0 !important;
+      background: transparent !important;
+      color: inherit !important;
+      cursor: pointer !important;
+      font:
+        600 12px/1 system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif !important;
+      letter-spacing: 0.01em !important;
+    }
+
+    #${PAKE_MAXIMIZE_BUTTON_ID}:hover,
+    #${PAKE_DRAG_REGION_ID} .pake-drag-handle:hover {
+      background: rgba(255, 255, 255, 0.08) !important;
+    }
+
+    #${PAKE_DRAG_REGION_ID} .pake-drag-handle svg,
+    #${PAKE_MAXIMIZE_BUTTON_ID} svg {
+      width: 14px !important;
+      height: 14px !important;
+      display: block !important;
+      fill: none !important;
+      stroke: currentColor !important;
+      stroke-width: 1.8 !important;
+      stroke-linecap: round !important;
+      stroke-linejoin: round !important;
+      pointer-events: none !important;
+    }
+  `;
   const isMac = /Mac/i.test(navigator.userAgent);
+  const isWindows = /Windows/i.test(navigator.userAgent);
   if (window["pakeConfig"]?.hide_title_bar && isMac) {
     const topPaddingStyleElement = document.createElement("style");
     topPaddingStyleElement.textContent = topPaddingCSS;
     document.head.appendChild(topPaddingStyleElement);
+  }
+
+  if (window["pakeConfig"]?.hide_title_bar && (isMac || isWindows)) {
+    const dragRegionStyleElement = document.createElement("style");
+    dragRegionStyleElement.textContent = dragRegionCSS;
+    document.head.appendChild(dragRegionStyleElement);
   }
 });

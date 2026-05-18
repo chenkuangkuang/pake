@@ -3,7 +3,7 @@
         {
             "url": "https://crs.edogex.com/admin-next/api-stats",
             "url_type": "web",
-            "hide_title_bar": false,
+            "hide_title_bar": true,
             "fullscreen": false,
             "width": 1440,
             "height": 960,
@@ -37,7 +37,7 @@
         "linux": true,
         "windows": false
     },
-    "system_tray_path": "png/edogex_api_stats_native_pin_fixed_256.ico",
+    "system_tray_path": "png/edogex_api_stats_native_pin_fixed_notitletest_256.ico",
     "inject": [
         "D:\\works\\pake\\projects\\edogex-api-stats\\inject.css",
         "D:\\works\\pake\\projects\\edogex-api-stats\\inject.js"

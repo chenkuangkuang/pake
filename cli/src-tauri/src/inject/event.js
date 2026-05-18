@@ -277,6 +277,28 @@ document.addEventListener("DOMContentLoaded", () => {
   const appWindow = tauri.window.getCurrentWindow();
   const invoke = tauri.core.invoke;
   const pakeConfig = window["pakeConfig"] || {};
+  const isWindows = /Windows/i.test(navigator.userAgent);
+  const dragIconSvg = [
+    '<svg viewBox="0 0 16 16" aria-hidden="true">',
+    '<circle cx="5" cy="4" r="1"></circle>',
+    '<circle cx="11" cy="4" r="1"></circle>',
+    '<circle cx="5" cy="8" r="1"></circle>',
+    '<circle cx="11" cy="8" r="1"></circle>',
+    '<circle cx="5" cy="12" r="1"></circle>',
+    '<circle cx="11" cy="12" r="1"></circle>',
+    "</svg>",
+  ].join("");
+  const maximizeIconSvg = [
+    '<svg viewBox="0 0 16 16" aria-hidden="true">',
+    '<rect x="3" y="3" width="10" height="10" rx="1"></rect>',
+    "</svg>",
+  ].join("");
+  const restoreIconSvg = [
+    '<svg viewBox="0 0 16 16" aria-hidden="true">',
+    '<path d="M5 5h7v7H5z"></path>',
+    '<path d="M4 11H3V4h7v1"></path>',
+    "</svg>",
+  ].join("");
   const forceInternalNavigation = pakeConfig.force_internal_navigation === true;
   const internalUrlRegex = pakeConfig.internal_url_regex || "";
   let internalUrlPattern = null;
@@ -288,30 +310,105 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  if (!document.getElementById("pake-top-sensor")) {
+    const topSensor = document.createElement("div");
+    topSensor.id = "pake-top-sensor";
+    document.body.appendChild(topSensor);
+  }
+
   if (!document.getElementById("pake-top-dom")) {
     const topDom = document.createElement("div");
     topDom.id = "pake-top-dom";
+    const dragHandle = document.createElement("div");
+    dragHandle.className = "pake-drag-handle";
+    dragHandle.setAttribute("data-tauri-drag-region", "");
+    dragHandle.innerHTML = dragIconSvg;
+    dragHandle.title = "拖动窗口";
+    dragHandle.setAttribute("aria-label", "拖动窗口");
+
+    const maximizeButton = document.createElement("button");
+    maximizeButton.id = "pake-maximize-btn";
+    maximizeButton.type = "button";
+    maximizeButton.innerHTML = maximizeIconSvg;
+    maximizeButton.title = "最大化窗口";
+    maximizeButton.setAttribute("aria-label", "最大化窗口");
+
+    topDom.appendChild(dragHandle);
+    topDom.appendChild(maximizeButton);
     document.body.appendChild(topDom);
   }
 
+  const sensorEl = document.getElementById("pake-top-sensor");
   const domEl = document.getElementById("pake-top-dom");
+  const dragHandleEl = domEl?.querySelector(".pake-drag-handle");
+  const maximizeButtonEl = document.getElementById("pake-maximize-btn");
 
-  domEl.addEventListener("touchstart", () => {
+  function updateMaximizeButtonText() {
+    if (!maximizeButtonEl || !isWindows || !pakeConfig.hide_title_bar) {
+      return;
+    }
+
+    appWindow
+      .isMaximized()
+      .then((maximized) => {
+        maximizeButtonEl.innerHTML = maximized ? restoreIconSvg : maximizeIconSvg;
+        maximizeButtonEl.title = maximized ? "还原窗口" : "最大化窗口";
+        maximizeButtonEl.setAttribute(
+          "aria-label",
+          maximized ? "还原窗口" : "最大化窗口",
+        );
+      })
+      .catch(() => {
+        maximizeButtonEl.innerHTML = maximizeIconSvg;
+        maximizeButtonEl.title = "最大化窗口";
+        maximizeButtonEl.setAttribute("aria-label", "最大化窗口");
+      });
+  }
+
+  function toggleMaximize() {
+    if (!isWindows || !pakeConfig.hide_title_bar) {
+      return;
+    }
+
+    const togglePromise =
+      typeof appWindow.toggleMaximize === "function"
+        ? appWindow.toggleMaximize()
+        : appWindow.isMaximized().then((maximized) => {
+            if (maximized && typeof appWindow.unmaximize === "function") {
+              return appWindow.unmaximize();
+            }
+            if (!maximized && typeof appWindow.maximize === "function") {
+              return appWindow.maximize();
+            }
+            return Promise.resolve();
+          });
+
+    Promise.resolve(togglePromise).finally(() => {
+      updateMaximizeButtonText();
+    });
+  }
+
+  dragHandleEl.addEventListener("touchstart", () => {
     appWindow.startDragging();
   });
 
-  domEl.addEventListener("mousedown", (e) => {
+  dragHandleEl.addEventListener("mousedown", (e) => {
     e.preventDefault();
     if (e.buttons === 1 && e.detail !== 2) {
       appWindow.startDragging();
     }
   });
 
-  domEl.addEventListener("dblclick", () => {
-    appWindow.isFullscreen().then((fullscreen) => {
-      appWindow.setFullscreen(!fullscreen);
-    });
+  dragHandleEl.addEventListener("dblclick", () => {
+    toggleMaximize();
   });
+
+  maximizeButtonEl.addEventListener("click", () => {
+    toggleMaximize();
+  });
+
+  updateMaximizeButtonText();
+  window.addEventListener("focus", updateMaximizeButtonText);
 
   if (window["pakeConfig"]?.disabled_web_shortcuts !== true) {
     document.addEventListener("keyup", (event) => {
