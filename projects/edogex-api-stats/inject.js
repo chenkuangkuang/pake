@@ -13,6 +13,7 @@
     const REFRESH_SETTINGS_BUTTON_ID = "pake-refresh-settings-btn";
     const REFRESH_SETTINGS_PANEL_ID = "pake-refresh-settings-panel";
     const URL_SYNC_STATE_KEY = "pake-url-sync-state";
+    const PINNED_STATE_STORAGE_KEY = "pake-pinned-state-preview";
     const REFRESH_INTERVAL_STORAGE_KEY = "pake-refresh-interval-seconds";
     const REFRESH_ENABLED_STORAGE_KEY = "pake-refresh-enabled";
     const REFRESH_BUTTON_VISIBLE_STORAGE_KEY = "pake-refresh-button-visible";
@@ -23,10 +24,20 @@
     }
 
     async function readPinnedState() {
+        if (!hasInvoke()) {
+            return root.localStorage?.getItem(PINNED_STATE_STORAGE_KEY) === "true";
+        }
+
         return root.__TAURI__.core.invoke("get_always_on_top");
     }
 
     async function togglePinnedState() {
+        if (!hasInvoke()) {
+            const nextPinned = !(await readPinnedState());
+            root.localStorage?.setItem(PINNED_STATE_STORAGE_KEY, nextPinned ? "true" : "false");
+            return nextPinned;
+        }
+
         return root.__TAURI__.core.invoke("toggle_always_on_top");
     }
 
@@ -281,7 +292,7 @@
     }
 
     function ensurePinButton() {
-        if (!root.document?.body || root.document.getElementById(PIN_BUTTON_ID) || !hasInvoke()) {
+        if (!root.document?.body || root.document.getElementById(PIN_BUTTON_ID)) {
             return;
         }
 
@@ -301,7 +312,13 @@
                 const pinned = await readPinnedState();
                 btn.textContent = api.getPinButtonText(pinned);
                 btn.setAttribute("data-pinned", pinned ? "true" : "false");
-                btn.title = pinned ? "Cancel always on top" : "Keep always on top";
+                btn.title = hasInvoke()
+                    ? pinned
+                        ? "Cancel always on top"
+                        : "Keep always on top"
+                    : pinned
+                      ? "Preview mode: simulated always-on-top is enabled"
+                      : "Preview mode: simulated always-on-top is disabled";
             } catch (error) {
                 console.error("[Pake Inject] failed to read pin state", error);
             }
@@ -312,7 +329,13 @@
                 const pinned = await togglePinnedState();
                 btn.textContent = api.getPinButtonText(pinned);
                 btn.setAttribute("data-pinned", pinned ? "true" : "false");
-                btn.title = pinned ? "Cancel always on top" : "Keep always on top";
+                btn.title = hasInvoke()
+                    ? pinned
+                        ? "Cancel always on top"
+                        : "Keep always on top"
+                    : pinned
+                      ? "Preview mode: simulated always-on-top is enabled"
+                      : "Preview mode: simulated always-on-top is disabled";
             } catch (error) {
                 console.error("[Pake Inject] failed to toggle pin", error);
             }
